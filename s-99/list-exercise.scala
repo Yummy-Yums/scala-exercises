@@ -80,6 +80,46 @@ object Main extends App {
     case Nil       => Nil
     case h :: tail => h :: compressRecursive(tail.dropWhile(_ == h))
   }
+
+
+  def pack[A](ls: List[A]): List[List[A]] = {
+
+    //ls.groupBy(identity).values.toList
+    ls match {
+      case Nil => Nil
+      case h :: tail =>
+        val (first, rest) = ls.span(_ == h)
+        first :: pack(rest)
+    }
+  
+  }
+
+  def encode[A](ls: List[A]): List[(Int, A)] = {
+
+   var res = List.empty[(Int, A)]
+  
+   pack(ls).foreach(xs =>
+     res = (xs.size, xs.head) :: res
+   )
+
+   res
+  }
+
+  def encodeModified[A](ls: List[A]): List[Any] = {
+
+   var res = List.empty[Any]
+  
+   pack(ls).foreach(xs =>
+     if (xs.size != 1){
+       res = (xs.size, xs.head) :: res
+     } else {
+       res = xs.head :: res
+     }
+   )
+
+   res
+  }
+
   println(compressRecursive(List(Symbol("a"), Symbol("a"), Symbol("a"), Symbol("a"), Symbol("b"), Symbol("c"), Symbol("c"), Symbol("a"), Symbol("a"), Symbol("d"), Symbol("e"), Symbol("e"), Symbol("e"), Symbol("e"))
 ))
 
