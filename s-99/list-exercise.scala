@@ -120,16 +120,35 @@ object Main extends App {
    res
   }
 
-  println(compressRecursive(List(Symbol("a"), Symbol("a"), Symbol("a"), Symbol("a"), Symbol("b"), Symbol("c"), Symbol("c"), Symbol("a"), Symbol("a"), Symbol("d"), Symbol("e"), Symbol("e"), Symbol("e"), Symbol("e"))
-))
+  def decode[A](xs: List[(Int, A)]): List[A] = {
+     xs.flatMap { elem =>
+       List.fill(elem._1)(elem._2)
+     }
+  }
 
-  println(flatten(List(List(1, 1), 2, List(3, List(5, 8)))))
-  
-  println(findKthElement(2, List(1, 1, 2, 3, 5, 8)))
-  println(findKthElement(3, List("o", "p", "l", "a")))
-  println(isPalindrome(List(1, 2, 3, 2, 1)))
-  println(isPalindrome(List(1, 2, 3)))
-    
-  println("Hello world!")
+  def duplicate[A](xs: List[A]): List[A] = {
+     xs.flatMap { elem =>
+       List.fill(2)(elem)
+     }
+  }
+
+  def duplicateN[A](number: Int, xs: List[A]): List[A] = {
+     xs.flatMap { elem =>
+       List.fill(number)(elem)
+     }
+  }
+
+  def split[A](length: Int, xs: List[A]): Tuple2[List[A], List[A]] = {
+    xs.splitAt(length)
+  }
+
+  def rotate[A](size: Int, xs: List[A]): List[A] = {
+    size match {
+      case size if size == 0 => xs
+      case size if size > 0 => xs.drop(size) ++ xs.take(size)
+      case size if size < 0 => {xs.takeRight(scala.math.abs(size)) ++ xs.dropRight(scala.math.abs(size))} 
+    }
+  }
+
   
 }
