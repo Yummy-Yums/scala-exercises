@@ -150,5 +150,42 @@ object Main extends App {
     }
   }
 
+   def removeAt[A](index: Int, xs: List[A]): (List[A], A) = {
+    xs.splitAt(index) match {
+      case (n, xs) if index < 0 => throw new NoSuchElementException
+      case (pre, e :: post) => (pre ::: post, e)
+      case (Nil, _) => throw new NoSuchElementException
+    }
+  }
+
+   def insertAt[A](element: A, index: Int, xs: List[A]): List[A] = {
+    xs.splitAt(index) match {
+      case (n, xs) if index < 0 => throw new NoSuchElementException
+      case (pre, post) => pre ::: element :: post
+      case (Nil, _) => throw new NoSuchElementException
+    }
+  }
+
+  def rangeMethod(start: Int, end: Int): List[Int] = {
+    if (end < start) Nil
+    else start :: rangeMethod(start + 1, end)
+  }
+
+  def randomSelect[A](n: Int, ls: List[A]): List[A] = {
+    def randomSelectR(n: Int, ls: List[A], r: util.Random): List[A] =
+      if (n <= 0) Nil
+      else {
+        val (rest, e) = removeAt(r.nextInt(ls.length), ls)
+        e :: randomSelectR(n - 1, rest, r)
+      }
+    randomSelectR(n, ls, new util.Random)  
+  }
+
+  def lotto[A](number: Int, range: Int): List[Int] = {
+
+    val res = rangeMethod(number, range)
+    randomSelect(number, res)
+  }
+
   
 }
