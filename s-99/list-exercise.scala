@@ -187,5 +187,22 @@ object Main extends App {
     randomSelect(number, res)
   }
 
+  def randomPermute[A](ls: List[A]): List[A] = {
+    randomSelect(ls.length, ls)
+  }
+
+  def combinations[A](number: Int, xs: List[A]): List[List[A]] = {
+      def flatMapSublists[A,B](ls: List[A])(f: (List[A]) => List[B]): List[B] = 
+        ls match {
+           case Nil => Nil
+           case sublist@(_ :: tail) => f(sublist) ::: flatMapSublists(tail)(f)  
+        }  
+      if (number == 0) List(Nil)
+      else flatMapSublists(xs) { sl =>
+        combinations(number - 1, sl.tail) map {sl.head :: _}
+      }   
+  }
+
+
   
 }
